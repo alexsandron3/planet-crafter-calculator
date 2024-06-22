@@ -1,0 +1,91 @@
+const ACTUAL_RATE = {
+    PPQ: 16706.00,
+    PK: 461440.00,
+    PA: 224356.98,
+    G: 14708.62
+};
+
+function convertUnits(value, unitType) {
+    let conversions = {};
+    
+    switch(unitType) {
+        case 'PPQ':
+            conversions.PPQ = value.toFixed(2);
+            conversions.PPT = (value / 1000).toFixed(2);
+            conversions.PPB = (value / 1000000).toFixed(2);
+            conversions.PPM = (value / 1000000000).toFixed(2);
+            break;
+        case 'PK':
+            conversions.PK = value.toFixed(2);
+            conversions.NK = (value / 1000).toFixed(2);
+            conversions.UK = (value / 1000000).toFixed(2);
+            conversions.MK = (value / 1000000000).toFixed(2);
+            break;
+        case 'PA':
+            conversions.NPA = value.toFixed(2);
+            conversions.UPA = (value / 1000).toFixed(2);
+            conversions.MPA = (value / 1000000).toFixed(2);
+            conversions.PA = (value / 1000000000).toFixed(2);
+            break;
+        case 'G':
+            conversions.G = value.toFixed(2);
+            conversions.KG = (value / 1000).toFixed(2);
+            conversions.T = (value / 1000000).toFixed(2);
+            conversions.KT = (value / 1000000000).toFixed(2);
+            conversions.MT = (value / 1000000000000).toFixed(2);
+            conversions.GT = (value / 1000000000000000).toFixed(2);
+            break;
+        default:
+            throw new Error(`Unknown unit type: ${unitType}`);
+    }
+
+    return conversions;
+}
+
+function calculateIUnits(actualRates) {
+    const averageValue = (actualRates.PPQ + actualRates.PK + actualRates.PA + actualRates.G) / 4;
+    let conversions = {};
+    conversions.TI = averageValue.toFixed(2);
+    conversions.KTI = (averageValue / 1000).toFixed(2);
+    conversions.MTI = (averageValue / 1000000).toFixed(2);
+    conversions.GTI = (averageValue / 1000000000).toFixed(2);
+    conversions.TTI = (averageValue / 1000000000000).toFixed(2);
+    conversions.PTI = (averageValue / 1000000000000000).toFixed(2);
+    return conversions;
+}
+
+function convertActualRates(actualRates) {
+    let convertedRates = {};
+    for (let unitType in actualRates) {
+        convertedRates[unitType] = convertUnits(actualRates[unitType], unitType);
+    }
+    convertedRates.I = calculateIUnits(actualRates);
+
+    return convertedRates;
+}
+
+
+const convertedRates = convertActualRates(ACTUAL_RATE);
+
+// console.log(convertedRates);
+
+
+function calculateTotalTI(rates) {
+    const sum = rates.reduce((total, rate) => total + rate, 0);
+    const average = sum / rates.length;
+    
+    const totalTI = {
+        TI: average.toFixed(2),
+        KTI: (average / 1000).toFixed(2),
+        MTI: (average / 1000000).toFixed(2),
+        GTI: (average / 1000000000).toFixed(2),
+        TTI: (average / 1000000000000).toFixed(2),
+        PTI: (average / 1000000000000000).toFixed(2)
+    };
+
+    return totalTI;
+}
+
+const exampleRates = [197.44, 6.43, 2.43, 93.21];
+const totalTI = calculateTotalTI(exampleRates);
+console.log(totalTI)
