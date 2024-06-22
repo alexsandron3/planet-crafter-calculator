@@ -7,16 +7,17 @@
     "clean": " rimraf ./build",
     "build": "npm run clean && ",
     "start": "node src",
-    "local": "ts-node src",
-    "local:watch": "nodemon src -e ts, json --exec 'npm run local'",
+    "local": "ts-node server.ts",
+    "local:watch": "nodemon --exec ts-node server.ts",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "format": "npx prettier --write src"
-
   },
   "author": "Alexsandron3",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.8",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
@@ -30,5 +31,9 @@
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
   }
 }
